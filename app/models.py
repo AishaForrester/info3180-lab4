@@ -16,11 +16,11 @@ class UserProfile(db.Model):
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(128))
 
-    def __int__(self, first_name, last_name, username, password):
+    def __init__(self, first_name, last_name, username, password):
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
-        self.password = generate_password_hash(password)
+        self.password = generate_password_hash(password, method='pbkdf2:sha256')  # Shorter hash
 
 
     def is_authenticated(self):
