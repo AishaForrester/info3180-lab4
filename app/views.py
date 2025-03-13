@@ -5,6 +5,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 from app.models import UserProfile
 from app.forms import LoginForm
+from app.forms import UploadForm
 from werkzeug.security import check_password_hash
 
 
@@ -23,19 +24,27 @@ def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
 
-
+@login_required
 @app.route('/upload', methods=['POST', 'GET'])
 def upload():
     # Instantiate your form class
+    form = UploadForm()
 
-    # Validate file upload on submit
-    if form.validate_on_submit():
+        # Validate file upload on submit
+
+        #if the user is submiting a form and the form is valid
+    if request.method == 'POST' and form.validate_on_submit(): 
         # Get file data and save to your uploads folder
+        file=form.imagefile.data #getting the file data (image)
+        filename = secure_filename(file.filename)
+        #we would get something like this: uploads/filename.jpg
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
 
         flash('File Saved', 'success')
         return redirect(url_for('home')) # Update this to redirect the user to a route that displays all uploaded image files
 
-    return render_template('upload.html')
+    return render_template('upload.html', form=form)
 
 
 @app.route('/login', methods=['POST', 'GET'])

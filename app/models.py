@@ -31,12 +31,16 @@ class UserProfile(db.Model):
 
     def is_anonymous(self):
         return False
+    
+    def get_id(self):
+        return str(self.id)  # Always return a string
 
+    """Not valid in Python 3 so removed this logic, uncomment if using earlier Python versions
     def get_id(self):
         try:
-            return Unicode(self.id)  # python 2 support, had to change as it threw an error
+            return unicode(self.id)  # python 2 support, had to change as it threw an error
         except NameError:
-            return str(self.id)  # python 3 support
+            return str(self.id)  # python 3 support"""
 
     def __repr__(self):
         return '<User %r>' % (self.username)
