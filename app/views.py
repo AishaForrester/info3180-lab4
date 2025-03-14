@@ -73,7 +73,7 @@ def get_image(filename):
 
     
 @login_required
-@app.route('/files', methods=['POST', 'GET'])
+@app.route('/files', methods=['GET'])
 def files():
     images = get_uploaded_images()
     print(images)
@@ -109,6 +109,15 @@ def login():
                
         
     return render_template("login.html", form=form)
+
+#****************************logout view****************************************
+@app.route('/logout')
+@login_required
+def logout():
+    """Logs the user out and redirects to the home page."""
+    logout_user()
+    flash('You have been successfully logged out.', 'success')
+    return redirect(url_for('home'))  # Redirect to the home page
 
 # user_loader callback. This callback is used to reload the user object from
 # the user ID stored in the session
