@@ -48,7 +48,7 @@ def upload():
     return render_template('upload.html', form=form)
 
 
-#Exercise 6 functions
+#*********************************Exercise 6 functions*******************************************
 
 def get_uploaded_images():
     image_list = []
@@ -72,13 +72,13 @@ def get_image(filename):
     return send_from_directory(os.path.abspath(app.config['UPLOAD_FOLDER']), filename)
 
     
-
+@login_required
 @app.route('/files', methods=['POST', 'GET'])
 def files():
     images = get_uploaded_images()
     print(images)
     return render_template("files.html", images=images)
-#end 
+#****************************************************************************************
 
 
 @app.route('/login', methods=['POST', 'GET'])

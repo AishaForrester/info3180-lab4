@@ -18,3 +18,25 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+/*_____________________________uploaded images styles (files.html)__________________________________*/
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 15px; /* Spacing between grid items */
+    padding: 20px;
+}
+
+.image-item {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.image-item img {
+    width: 100%;
+    height: 300px; 
+    display: block;
+    object-fit: cover; /* Ensures images fill their container */
+}
