@@ -7,6 +7,7 @@ from app.models import UserProfile
 from app.forms import LoginForm
 from app.forms import UploadForm
 from werkzeug.security import check_password_hash
+from flask import Flask, send_from_directory
 
 
 ###
@@ -45,6 +46,39 @@ def upload():
         return redirect(url_for('home')) # Update this to redirect the user to a route that displays all uploaded image files
 
     return render_template('upload.html', form=form)
+
+
+#Exercise 6 functions
+
+def get_uploaded_images():
+    image_list = []
+    rootdir = os.path.abspath(app.config['UPLOAD_FOLDER']) #move up one folder  
+    print("checking directory:", rootdir)
+
+    for subdir, dirs, files in os.walk(rootdir):  #walk through the directory
+        print("currently in:", subdir) 
+        for file in files:
+            print("Found file:", file)
+            if file.lower().endswith(('.jpg', '.png', '.jpeg', '.gif')):
+                image_list.append(file)    # file name 
+    return image_list
+
+@app.route('/uploads/<filename>')
+def get_image(filename):
+
+    """Return a specific image from the uploads folder."""
+    print(app.config['UPLOAD_FOLDER'])
+    
+    return send_from_directory(os.path.abspath(app.config['UPLOAD_FOLDER']), filename)
+
+    
+
+@app.route('/files', methods=['POST', 'GET'])
+def files():
+    images = get_uploaded_images()
+    print(images)
+    return render_template("files.html", images=images)
+#end 
 
 
 @app.route('/login', methods=['POST', 'GET'])
